@@ -16,6 +16,6 @@ python3 dijkstra.py
 
 ## Team members
 
-Raquel Magdalena Ochoa Martínez
-Santiago Perez Ochoa
-Niels Ouvrard
+- Raquel Magdalena Ochoa Martínez
+- Santiago Perez Ochoa
+- Niels Ouvrard
