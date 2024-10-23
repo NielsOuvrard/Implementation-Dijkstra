@@ -41,12 +41,13 @@ def error_handler(all_nodes_names, start, end):
 if __name__ == '__main__':
     # if not arguments are passed, quit
     if len(sys.argv) < 4:
-        print('Usage: python3 src/main.py <graph_path> <node_start> <node_end>')
+        print('Usage: python3 src/main.py <graph_path> <node_start> <node_end> [output_file]')
         sys.exit(1)
     
     graphs = pydot.graph_from_dot_file(sys.argv[1])
     start = sys.argv[2]
     end = sys.argv[3]
+    output_file = 'graph.png' if len(sys.argv) < 5 else sys.argv[4]
 
     for graph in graphs:
         graph, all_nodes_names = add_all_nodes(graph)
@@ -54,15 +55,16 @@ if __name__ == '__main__':
         error_handler(all_nodes_names, start, end)
 
         data = dijkstra_dot(graph, start)
-        print(data[end])
 
         last_node = start
         for node in data[end]['path']:
-            print(f'coloring {last_node} - {node} red')
             change_color_link(graph, last_node, node, 'red')
             last_node = node
         change_color_link(graph, last_node, end, 'red')
 
-        graph.write_png(f'graph.png')
-        print(f'graph.png saved')
+        # add title to graph
+        graph.set_label(f'Dijkstra from {start} to {end}\nDistance: {data[end]["dist"]}')
+
+        graph.write_png(output_file)
+        print(f'Graph saved as {output_file}')
 

@@ -11,7 +11,7 @@ pip install -r requirements.txt
 ## Usage
 
 ```shell
-Usage: python3 src/main.py <graph_path> <node_start> <node_end>
+Usage: python3 src/main.py <graph_path> <node_start> <node_end> [output_file]
 ```
 
 ## Run the program
