@@ -1,0 +1,11 @@
+digraph H {
+    A -> B [label="2", dir="both"];
+    B -> C [label="1", dir="both"];
+    C -> E [label="3", dir="both"];
+    E -> B [label="2", dir="both"];
+    A -> C [label="4", dir="both"];
+    D -> B [label="4", dir="both"];
+    D -> E [label="3", dir="both"];
+    D -> F [label="2", dir="both"];
+    F -> E [label="2", dir="both"];
+}
