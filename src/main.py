@@ -1,11 +1,11 @@
-import pydot
+import pydot # type: ignore
 import os
 import sys
 
 from dijkstra_dot import dijkstra_dot
 
 
-def change_color_link(graph, node1, node2, color):
+def change_color_link(graph: pydot.Dot, node1: str, node2: str, color: str):
     for edge in graph.get_edges():
         if edge.get_source() == node1 and edge.get_destination() == node2:
             edge.set_color(color)
@@ -18,8 +18,8 @@ def change_color_link(graph, node1, node2, color):
             if edge.get('dir') == '"both"':
                 edge.set('dir', 'back')
             
-def add_all_nodes(graph):
-    all_nodes_names = []
+def add_all_nodes(graph: pydot.Dot) -> tuple[pydot.Dot, list[str]]:
+    all_nodes_names: list[str] = []
     # Ensure all nodes are added to the graph, only once
     for edge in graph.get_edges():
         if edge.get_source() not in all_nodes_names:
@@ -30,7 +30,7 @@ def add_all_nodes(graph):
             all_nodes_names.append(edge.get_destination())
     return graph, all_nodes_names
 
-def error_handler(all_nodes_names, start, end):
+def error_handler(all_nodes_names: list[str], start: str, end: str):
     if start not in all_nodes_names:
         print(f'Node {start} not in graph')
         sys.exit(1)
@@ -57,13 +57,13 @@ if __name__ == '__main__':
         data = dijkstra_dot(graph, start)
 
         last_node = start
-        for node in data[end]['path']:
+        for node in data[end].path:
             change_color_link(graph, last_node, node, 'red')
             last_node = node
         change_color_link(graph, last_node, end, 'red')
 
         # add title to graph
-        graph.set_label(f'Dijkstra from {start} to {end}\nDistance: {data[end]["dist"]}')
+        graph.set_label(f'Dijkstra from {start} to {end}\nDistance: {data[end].dist}')
 
         graph.write_png(output_file)
         print(f'Graph saved as {output_file}')

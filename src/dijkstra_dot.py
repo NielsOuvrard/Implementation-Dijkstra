@@ -1,37 +1,49 @@
 # python simple Dijkstra
-import pydot
+import pydot # type: ignore
 
-def neighbors(graph: pydot.Dot, node: str):
-    neighbors = []
+class Node:
+    def __init__(self, name: str, dist: float, path: list[str]) -> None:
+        self.name = name
+        self.dist = dist
+        self.path = path
+
+    def __str__(self) -> str:
+        return f'{self.name}: {self.dist}, {self.path}'
+
+    def __repr__(self) -> str:
+        return self.__str__()
+
+
+def neighbors(graph: pydot.Dot, node: str) -> list[Node]:
+    neighbors: list[Node] = []
     for edge in graph.get_edges():
+        weight = edge.get('label').strip("\"")
+        if float(weight) < 0:
+            print(f'Error: negative weight found in edge {edge.get_source()} -> {edge.get_destination()}')
+            exit(1)
         if edge.get_source() == node:
-            neighbors.append({'node': edge.get_destination(), 'weight': int(edge.get('label').strip("\""))})
+            neighbors.append(Node(edge.get_destination(), float(weight), []))
         elif edge.get_destination() == node:
-            neighbors.append({'node': edge.get_source(), 'weight': int(edge.get('label').strip("\""))})
+            neighbors.append(Node(edge.get_source(), float(weight), []))
     return neighbors
 
 
-def dijkstra_dot(graph: pydot.Dot, start: str):
-    distances = {}
-    for node in graph.get_nodes():
-        distances[node.get_name()] = {
-            'dist': float('infinity'),
-            'path': []
-        }
-    distances[start]['dist'] = 0
+def dijkstra_dot(graph: pydot.Dot, start: str) -> dict[str, Node]:
+    distances = {node.get_name(): Node(node.get_name(), float('inf'), []) for node in graph.get_nodes()}
+    distances[start] = Node(start, 0, [])
     
-    unvisited = graph.get_nodes()
+    unvisited: list[str] = [node.get_name() for node in graph.get_nodes()]
 
     while unvisited:
-        current_node = min(unvisited, key=lambda node: distances[node.get_name()]['dist'])
+        current_node: str = min(unvisited, key=lambda node: distances[node].dist)
 
-        for neighbor in neighbors(graph, current_node.get_name()):
-            distance = distances[current_node.get_name()]['dist'] + neighbor['weight']
+        for neighbor in neighbors(graph, current_node):
+            distance = distances[current_node].dist + neighbor.dist
 
-            if distance < distances[neighbor['node']]['dist']:
-                distances[neighbor['node']]['dist'] = distance
-                distances[neighbor['node']]['path'] = distances[current_node.get_name()]['path'] +\
-                    ([current_node.get_name()] if current_node.get_name() != start else [])
+            if distance < distances[neighbor.name].dist:
+                distances[neighbor.name].dist = distance
+                distances[neighbor.name].path = distances[current_node].path +\
+                    ([current_node] if current_node != start else [])
 
         unvisited.remove(current_node)
 
