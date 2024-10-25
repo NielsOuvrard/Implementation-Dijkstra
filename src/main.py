@@ -3,34 +3,13 @@ import os
 import sys
 
 from dijkstra_dot import dijkstra_dot
-
-
-def change_color_link(graph: pydot.Dot, node1: str, node2: str, color: str):
-    for edge in graph.get_edges():
-        if edge.get_source() == node1 and edge.get_destination() == node2:
-            edge.set_color(color)
-            # remove "both" attribute to forward
-            if edge.get('dir') == '"both"':
-                edge.set('dir', 'forward')
-        elif edge.get_source() == node2 and edge.get_destination() == node1:
-            edge.set_color(color)
-            # remove "both" attribute to back
-            if edge.get('dir') == '"both"':
-                edge.set('dir', 'back')
-            
-def add_all_nodes(graph: pydot.Dot) -> tuple[pydot.Dot, list[str]]:
-    all_nodes_names: list[str] = []
-    # Ensure all nodes are added to the graph, only once
-    for edge in graph.get_edges():
-        if edge.get_source() not in all_nodes_names:
-            graph.add_node(pydot.Node(edge.get_source()))
-            all_nodes_names.append(edge.get_source())
-        if edge.get_destination() not in all_nodes_names:
-            graph.add_node(pydot.Node(edge.get_destination()))
-            all_nodes_names.append(edge.get_destination())
-    return graph, all_nodes_names
+from utils import add_all_nodes, change_color_link
 
 def error_handler(all_nodes_names: list[str], start: str, end: str):
+    """
+    Check if the start and end nodes are in the graph.
+    Otherwise, print an error message and exit the program.
+    """
     if start not in all_nodes_names:
         print(f'Node {start} not in graph')
         sys.exit(1)
