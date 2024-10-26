@@ -13,9 +13,9 @@ class Node:
         return f'{self.name}: {self.dist}, {self.path}'
 
 
-def change_color_link(graph: pydot.Dot, node1: str, node2: str, color: str):
+def highlight_shortest_path(graph: pydot.Dot, node1: str, node2: str, color: str):
     """
-    Change the color of a link between two nodes and remove the "both" attribute from the edge.
+    Highlight the shortest path between two nodes by changing the color and direction of the edges.
 
     This function iterates through the edges of the graph and changes the color of the edge between the specified nodes. If the edge has a "both" direction attribute, it changes it to "forward" or "back" depending on the direction of the edge.
 
