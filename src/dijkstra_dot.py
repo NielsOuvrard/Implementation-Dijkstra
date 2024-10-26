@@ -14,6 +14,26 @@ class Node:
     def __str__(self) -> str:
         return f'{self.name}: {self.dist}, {self.path}'
 
+def update_distance(current: str, neighbor: Node, distances: dict[str, Node], start: str):
+    """
+        Update the shortest known distance and path to a neighbor node if a shorter path is found.
+
+        This function checks if the distance to the `neighbor` node via the `current` node
+        is shorter than the currently known distance. If so, it updates the distance and the path
+        in the `distances` dictionary.
+
+        Args:
+            current (str): The name of the current node being processed.
+            neighbor (Node): The neighbor node to update.
+            distances (dict[str, Node]): Dictionary containing the shortest known distances and paths
+                                         for each node.
+            start (str): The starting node for the Dijkstra algorithm, used to initialize the path correctly.
+    """
+    distance = distances[current].dist + neighbor.dist
+    if distance < distances[neighbor.name].dist:
+        distances[neighbor.name].dist = distance
+        distances[neighbor.name].path = distances[current].path + \
+            ([current] if current != start else [])
 
 def neighbors(graph: pydot.Dot, node: str) -> list[Node]:
     """
@@ -62,13 +82,9 @@ def dijkstra_dot(graph: pydot.Dot, start: str) -> dict[str, Node]:
     while unvisited:
         current_node: str = min(unvisited, key=lambda node: distances[node].dist)
 
+        # Update the shortest path and distance for each neighbor if a shorter path is found
         for neighbor in neighbors(graph, current_node):
-            distance = distances[current_node].dist + neighbor.dist
-
-            if distance < distances[neighbor.name].dist:
-                distances[neighbor.name].dist = distance
-                distances[neighbor.name].path = distances[current_node].path +\
-                    ([current_node] if current_node != start else [])
+            update_distance(current_node, neighbor, distances, start)
 
         unvisited.remove(current_node)
 
