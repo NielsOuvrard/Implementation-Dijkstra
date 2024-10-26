@@ -1,5 +1,18 @@
 import pydot # type: ignore
 
+class Node:
+    """
+    Node class to store the distance and path to a node.
+    """
+    def __init__(self, name: str, dist: float, path: list[str]) -> None:
+        self.name = name
+        self.dist = dist
+        self.path = path
+
+    def __str__(self) -> str:
+        return f'{self.name}: {self.dist}, {self.path}'
+
+
 def change_color_link(graph: pydot.Dot, node1: str, node2: str, color: str):
     """
     Change the color of a link between two nodes and remove the "both" attribute from the edge.

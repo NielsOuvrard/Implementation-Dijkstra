@@ -1,18 +1,6 @@
 # python simple Dijkstra
 import pydot # type: ignore
-from utils import add_all_nodes
-
-class Node:
-    """
-    Node class to store the distance and path to a node.
-    """
-    def __init__(self, name: str, dist: float, path: list[str]) -> None:
-        self.name = name
-        self.dist = dist
-        self.path = path
-
-    def __str__(self) -> str:
-        return f'{self.name}: {self.dist}, {self.path}'
+from utils import Node, add_all_nodes
 
 
 def neighbors(graph: pydot.Dot, node: str) -> list[Node]:

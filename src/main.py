@@ -1,9 +1,8 @@
 import pydot # type: ignore
-import os
 import sys
 
 from dijkstra_dot import dijkstra_dot
-from utils import add_all_nodes, change_color_link
+from utils import Node, add_all_nodes, change_color_link
 
 def error_handler(all_nodes_names: list[str], start: str, end: str):
     """
@@ -33,7 +32,7 @@ if __name__ == '__main__':
 
         error_handler(all_nodes_names, start, end)
 
-        data = dijkstra_dot(graph, start)
+        data: dict[str, Node] = dijkstra_dot(graph, start)
 
         last_node = start
         for node in data[end].path:
