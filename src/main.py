@@ -2,7 +2,7 @@ import pydot # type: ignore
 import sys
 
 from dijkstra_dot import dijkstra_dot
-from utils import Node, add_all_nodes, change_color_link
+from utils import Node, add_all_nodes, highlight_shortest_path
 
 def error_handler(all_nodes_names: list[str], start: str, end: str):
     """
@@ -36,9 +36,9 @@ if __name__ == '__main__':
 
         last_node = start
         for node in data[end].path:
-            change_color_link(graph, last_node, node, 'red')
+            highlight_shortest_path(graph, last_node, node, 'red')
             last_node = node
-        change_color_link(graph, last_node, end, 'red')
+        highlight_shortest_path(graph, last_node, end, 'red')
 
         # add title to graph
         graph.set_label(f'Dijkstra from {start} to {end}\nDistance: {data[end].dist}')
