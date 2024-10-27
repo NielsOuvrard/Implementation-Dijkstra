@@ -65,8 +65,9 @@ def print_cli(graph: pydot.Dot, shortest_path: list[str], output_file: str, dist
         console.print(panel)
 
     def show_output(output_file: str):
-        panel = Panel(f'Graph saved as {output_file}', title='Output', border_style='bold blue')
-        console.print(panel)
+        if output_file:
+            panel = Panel(f'Graph saved as {output_file}', title='Output', border_style='bold blue')
+            console.print(panel)
 
     table = create_table(fill_links(graph))
 

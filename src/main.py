@@ -47,6 +47,10 @@ if __name__ == '__main__':
 
         local_output_file = f'{output_file}.png' if user_output_file and len(graphs) == 1 else f'{output_file}_{graph.get_name()}.png'
 
+        if data[end].dist == float('inf'):
+            print_cli(graph, [], "", float('inf'))
+            continue
+
         print_cli(graph, [start] + data[end].path + [end], local_output_file, data[end].dist)
     
         last_node = start
