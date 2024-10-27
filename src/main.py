@@ -35,7 +35,7 @@ if __name__ == '__main__':
 
         data: dict[str, Node] = dijkstra_dot(graph, start)
 
-        print_cli(graph, [start] + data[end].path + [end], output_file)
+        print_cli(graph, [start] + data[end].path + [end], output_file, data[end].dist)
     
         last_node = start
         for node in data[end].path:

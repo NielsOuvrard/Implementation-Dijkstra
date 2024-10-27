@@ -18,7 +18,7 @@ class LinkToPrint:
         return self.__str__()
 
 
-def print_cli(graph: pydot.Dot, shortest_path: list[str], output_file: str):
+def print_cli(graph: pydot.Dot, shortest_path: list[str], output_file: str, distance: int | float):
 
     def add_link(links: list[LinkToPrint], src: str, dest: str, weight: int | float) -> list[LinkToPrint]:
         for i, link in enumerate(links):
@@ -52,13 +52,13 @@ def print_cli(graph: pydot.Dot, shortest_path: list[str], output_file: str):
         
         return table
 
-    def show_path(path: list[str]):
+    def show_path(path: list[str], distance: int | float):
         if not path:
             console.print(Panel("No path found!", style="bold red"))
             return
 
         path_str = " -> ".join(path)
-        panel = Panel(f"Path: {path_str}", title="Shortest Path", border_style="bold green")
+        panel = Panel(f"Path: {path_str}\nDistance: {distance}", title="Shortest Path", border_style="bold green")
         console.print(panel)
 
     def show_output(output_file: str):
@@ -73,4 +73,4 @@ def print_cli(graph: pydot.Dot, shortest_path: list[str], output_file: str):
     console.print()
     console.print(table)
     console.print()
-    show_path(shortest_path)
+    show_path(shortest_path, distance)
