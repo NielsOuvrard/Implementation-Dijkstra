@@ -3,6 +3,7 @@ import sys
 
 from dijkstra_dot import dijkstra_dot
 from utils import Node, add_all_nodes, highlight_shortest_path
+from print_cli import print_cli
 
 def error_handler(all_nodes_names: list[str], start: str, end: str):
     """
@@ -34,6 +35,8 @@ if __name__ == '__main__':
 
         data: dict[str, Node] = dijkstra_dot(graph, start)
 
+        print_cli(graph, [start] + data[end].path + [end], output_file)
+    
         last_node = start
         for node in data[end].path:
             highlight_shortest_path(graph, last_node, node, 'red')
@@ -44,5 +47,3 @@ if __name__ == '__main__':
         graph.set_label(f'Dijkstra from {start} to {end}\nDistance: {data[end].dist}')
 
         graph.write_png(output_file)
-        print(f'Graph saved as {output_file}')
-
