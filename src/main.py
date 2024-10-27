@@ -21,12 +21,22 @@ if __name__ == '__main__':
     # if not arguments are passed, quit
     if len(sys.argv) < 4:
         print('Usage: python3 src/main.py <graph_path> <node_start> <node_end> [output_file]')
+        print('\t<graph_path>: path to the graph file in DOT format')
+        print('\t<node_start>: name of the start node')
+        print('\t<node_end>: name of the end node')
+        print('\t[output_file]: name of the png output file (optional, default: graph.png)')
         sys.exit(1)
     
     graphs = pydot.graph_from_dot_file(sys.argv[1])
     start = sys.argv[2]
     end = sys.argv[3]
-    output_file = 'graph.png' if len(sys.argv) < 5 else sys.argv[4]
+
+    if len(sys.argv) < 5:
+        user_output_file = False
+        output_file = 'graph'
+    else:
+        user_output_file = True
+        output_file = sys.argv[4] if not sys.argv[4].endswith('.png') else sys.argv[4][:-4]
 
     for graph in graphs:
         graph, all_nodes_names = add_all_nodes(graph)
@@ -35,7 +45,9 @@ if __name__ == '__main__':
 
         data: dict[str, Node] = dijkstra_dot(graph, start)
 
-        print_cli(graph, [start] + data[end].path + [end], output_file, data[end].dist)
+        local_output_file = f'{output_file}.png' if user_output_file and len(graphs) == 1 else f'{output_file}_{graph.get_name()}.png'
+
+        print_cli(graph, [start] + data[end].path + [end], local_output_file, data[end].dist)
     
         last_node = start
         for node in data[end].path:
@@ -46,4 +58,4 @@ if __name__ == '__main__':
         # add title to graph
         graph.set_label(f'Dijkstra from {start} to {end}\nDistance: {data[end].dist}')
 
-        graph.write_png(output_file)
+        graph.write_png(local_output_file)

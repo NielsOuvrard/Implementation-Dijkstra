@@ -18,13 +18,17 @@ def neighbors(graph: pydot.Dot, node: str) -> list[Node]:
     """
     neighbors: list[Node] = []
     for edge in graph.get_edges():
-        weight = edge.get('label').strip("\"")
+        try:
+            weight = edge.get('label').strip("\"")
+        except AttributeError:
+            weight = 1
+
         if float(weight) < 0:
             print(f'Error: negative weight found in edge {edge.get_source()} -> {edge.get_destination()}')
             exit(1)
-        if edge.get_source() == node:
+        if edge.get_source() == node and edge.get('dir') != '"back"':
             neighbors.append(Node(edge.get_destination(), float(weight), []))
-        elif edge.get_destination() == node:
+        elif edge.get_destination() == node and (edge.get('dir') == '"both"' or edge.get('dir') == '"back"'):
             neighbors.append(Node(edge.get_source(), float(weight), []))
     return neighbors
 

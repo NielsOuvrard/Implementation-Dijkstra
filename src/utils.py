@@ -26,16 +26,18 @@ def highlight_shortest_path(graph: pydot.Dot, node1: str, node2: str, color: str
         color (str): The color to set for the edge.
     """
     for edge in graph.get_edges():
+        if not edge.get_label():
+            edge.set_label('1')
+
         if edge.get_source() == node1 and edge.get_destination() == node2:
             edge.set_color(color)
             # remove "both" attribute to forward
             if edge.get('dir') == '"both"':
                 edge.set('dir', 'forward')
-        elif edge.get_source() == node2 and edge.get_destination() == node1:
+        elif edge.get_source() == node2 and edge.get_destination() == node1 and (edge.get('dir') == '"back"' or edge.get('dir') == '"both"'):
             edge.set_color(color)
             # remove "both" attribute to back
-            if edge.get('dir') == '"both"':
-                edge.set('dir', 'back')
+            edge.set('dir', 'back')
 
 
 def add_all_nodes(graph: pydot.Dot) -> tuple[pydot.Dot, list[str]]:

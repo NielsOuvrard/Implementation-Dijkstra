@@ -34,14 +34,17 @@ def print_cli(graph: pydot.Dot, shortest_path: list[str], output_file: str, dist
         for edge in graph.get_edges():
             src = edge.get_source()
             dest = edge.get_destination()
-            weight = float(edge.get('label').strip("\""))
+            try:
+                weight = float(edge.get('label').strip("\""))
+            except AttributeError:
+                weight = 1
             links = add_link(links, src, dest, weight)
             if edge.get('dir') == '"both"':
                 links = add_link(links, dest, src, weight)
         return links
 
     def create_table(links: list[LinkToPrint]) -> Table:
-        table = Table(title="Graph Representation", show_header=True, header_style="bold magenta")
+        table = Table(title=f"Graph {graph.get_name()} Representation", show_header=True, header_style="bold magenta")
         table.add_column("Node", justify="center", style="cyan", no_wrap=True)
         table.add_column("Connected To", justify="left")
         table.add_column("Weight ->", justify="center")
