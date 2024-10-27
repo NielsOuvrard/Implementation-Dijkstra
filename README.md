@@ -23,6 +23,10 @@ python3 src/main.py graphs/graph1.dot A F examples/graph1_solved.png
 In this case, the program will find the shortest path from node A to node D in the graph1.dot file.
 It will create a `graph.png` file with the graph and the shortest path, in red.
 
+### CLI output
+
+![Screenshot_CLI.png.png](examples/Screenshot_CLI.png)
+
 ### Graph1 original
 
 ![graph1_original.png](examples/graph1_original.png)
